@@ -92,14 +92,22 @@ class MyApplication(QMainWindow):
     def get_file_in_tree_view(self, index):
         index = self.tree_model.index(index.row(), 0, index.parent())
         filePath = self.tree_model.filePath(index)
+        self.search_tree.setCurrentIndex(index)
+        self.search_tree.scrollTo(index, QAbstractItemView.ScrollHint.PositionAtCenter)
         print("Selected File Path:", filePath)
         self.search_directory_content(filePath)
 
     def search_directory_content(self, path):
         try:
+            # expand and focus file tree view to current item
+            index = self.tree_model.index(path)
+            self.search_tree.expand(index)
+            self.search_tree.setCurrentIndex(index)
+            self.search_tree.scrollTo(index, QAbstractItemView.ScrollHint.PositionAtCenter)
+
+            # clear results from previous search
             self.file_table_model.removeRows(1, self.file_table_model.rowCount()-1)
 
-            # please do all search_result configs before setting model
             # populate table
             path_obj = Path(path)
             for file in path_obj.iterdir():
