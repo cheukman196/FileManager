@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from PyQt6 import uic
 from PyQt6.QtCore import *
@@ -6,20 +6,18 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 import utils
 import subprocess, os, platform
-
 from directory_stack import DirectoryStack
 
 
 class MyApplication(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("UI/main.ui", self)
+        uic.loadUi("ui/main.ui", self)
         self.show()
 
         # load models
         self.tree_model = QFileSystemModel()
         self.file_table_model = QStandardItemModel(0, 5)
-        # self.file_table_model.setHorizontalHeaderLabels(['Name', 'Date Modified', 'Type', 'Size', 'Path'])
         self.directory_stack = DirectoryStack(str(Path.home()))
 
         # get visual elements
