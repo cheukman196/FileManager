@@ -1,5 +1,7 @@
-from stack import Stack
-from folder import Folder
+from pathlib import Path
+
+from model.folder import Folder
+from model.stack import Stack
 
 
 class DirectoryStack:
@@ -40,3 +42,5 @@ class DirectoryStack:
         self.can_visit_prev = self.back_stack.size() == 0
         self.can_visit_next = self.next_stack.size() == 0
         self.can_visit_parent = self.current_dir != self.root_dir
+
+

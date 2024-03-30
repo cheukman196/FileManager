@@ -6,7 +6,10 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 import utils
 import subprocess, os, platform
-from directory_stack import DirectoryStack
+
+import view.main_view
+from controller.main_view_controller import MainViewController
+from model.directory_stack import DirectoryStack
 
 
 class MyApplication(QMainWindow):
@@ -23,7 +26,6 @@ class MyApplication(QMainWindow):
         # get visual elements
         self.browse_button = self.findChild(QPushButton, "browse_file_button")
         self.search_box = self.findChild(QLineEdit, "search_box")
-        self.search_box_warning = self.findChild(QLabel, "search_box_warning")
         self.search_result = self.findChild(QTableView, "search_result")
         self.search_tree = self.findChild(QTreeView, "search_tree")
         self.back_button = self.findChild(QPushButton, "back_button")
@@ -39,20 +41,21 @@ class MyApplication(QMainWindow):
         # load interactions
         self.load_click_functions()
 
-
+    # done
     def load_button_icons(self):
-        back_icon = QIcon("Icons\\left.png")
+        back_icon = QIcon("icon\\left.png")
         self.back_button.setIcon(back_icon)
         self.back_button.setIconSize(QSize(10, 10))
 
-        up_icon = QIcon("Icons\\up.png")
+        up_icon = QIcon("icon\\up.png")
         self.up_button.setIcon(up_icon)
         self.up_button.setIconSize(QSize(14, 14))
 
-        next_icon = QIcon("Icons\\right.png")
+        next_icon = QIcon("icon\\right.png")
         self.next_button.setIcon(next_icon)
         self.next_button.setIconSize(QSize(12, 12))
 
+    # done
     def load_table_view_settings(self):
         self.file_table_model.setHorizontalHeaderLabels(['Name', 'Date Modified', 'Type', 'Size', 'Path'])
         self.search_result.setColumnWidth(0, 300)  # set name col width
@@ -60,6 +63,8 @@ class MyApplication(QMainWindow):
         self.search_result.setColumnWidth(3, 80)  # set size col width
         self.search_result.setColumnHidden(4, True)  # hide path column
 
+
+    # done, directory_tree_controller
     def load_tree(self, path=str(Path.home().as_posix())):
         default_dir = path
         self.tree_model = QFileSystemModel()
@@ -78,6 +83,7 @@ class MyApplication(QMainWindow):
         # set search bar to show root path
         self.search_box.setText(path)
 
+    # done, main_view
     def load_click_functions(self):
         self.browse_button.clicked.connect(self.set_root_folder)
         self.search_tree.clicked.connect(self.get_file_in_tree_view)
@@ -86,6 +92,7 @@ class MyApplication(QMainWindow):
         self.next_button.clicked.connect(self.directory_stack.visit_next_page)
         self.up_button.clicked.connect(self.directory_stack.visit_parent_directory)
 
+    # done, main controller
     def set_root_folder(self):
         default_dir = str(Path.home())
         path = QFileDialog.getExistingDirectory(self, "Select Root Folder", default_dir)
@@ -94,8 +101,9 @@ class MyApplication(QMainWindow):
             self.search_box.setText(path)
             self.search_directory_content(path)
 
-    # return tree view's selected file path
+    # done, main controller
     def get_file_in_tree_view(self, index):
+        print(str(index))
         index = self.tree_model.index(index.row(), 0, index.parent())
         filePath = self.tree_model.filePath(index)
         self.search_tree.setCurrentIndex(index)
@@ -103,6 +111,7 @@ class MyApplication(QMainWindow):
         print("Selected File Path:", filePath)
         self.search_directory_content(filePath)
 
+    # done, table_controller and tree_controller
     def search_directory_content(self, path):
         try:
             # expand and focus file tree view to current item
@@ -133,6 +142,7 @@ class MyApplication(QMainWindow):
         except Exception as e:
             print(e)
 
+    # done, main controller
     def navigate_to_link(self):
         row = self.search_result.selectionModel().currentIndex().row()
         item = self.file_table_model.item(row, 4)
@@ -143,6 +153,7 @@ class MyApplication(QMainWindow):
         if path and path_obj.is_dir():
             self.search_directory_content(path)
 
+    # not implemented, main controller
     def open_item_in_os(self):
         indexes = self.search_result.selectedIndexes()
         item = self.file_table_model.itemFromIndex(indexes[-1])
@@ -157,9 +168,9 @@ class MyApplication(QMainWindow):
 
 
 if __name__ == '__main__':
-    try:
-        app = QApplication([])
-        window = MyApplication()
-        app.exec()
-    except Exception as e:
-        print(e)
+
+    app = QApplication([])
+    # window = MyApplication()
+    controller = MainViewController()
+    app.exec()
+
