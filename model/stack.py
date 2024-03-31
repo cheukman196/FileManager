@@ -11,6 +11,7 @@ class Stack:
 
     def clear(self):
         self.head = None
+        self.size = 0
 
     def push(self, folder):
         folder.next = self.head
