@@ -17,18 +17,6 @@ class DirectoryTableController:
         self.main_view = main_view
         self.search_directory_contents(os.path.expanduser('~'))
 
-
-    # def navigate_to_link(self):
-    #     row = self.main_view.tree_view.selectionModel().currentIndex().row()
-    #     item = self.table_model.item(row, 4)
-    #     print(item.text())
-    #     path = item.text()
-    #
-    #     path_obj = Path(path)
-    #     if path and path_obj.is_dir():
-    #         # self.search_directory_content(path)
-    #         pass # reference
-
     def search_directory_contents(self, path):
         try:
             # clear previous records (if any)
@@ -58,7 +46,7 @@ class DirectoryTableController:
 
             self.main_view.table_view.setModel(self.table_model)
             self.main_view.table_view.setColumnHidden(4, True)  # hide path column
-            self.main_view.table_view.setColumnWidth(0, 300)  # set name col width
+            self.main_view.table_view.setColumnWidth(0, 340)  # set name col width
             self.main_view.table_view.setColumnWidth(1, 120)  # set name col width
             self.main_view.table_view.setColumnWidth(2, 80)  # set type col width
             self.main_view.table_view.setColumnWidth(3, 80)  # set size col width

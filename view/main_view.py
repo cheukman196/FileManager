@@ -31,13 +31,15 @@ class MainView(QMainWindow):
         self.up_button = self.findChild(QPushButton, "up_button")
         self.next_button = self.findChild(QPushButton, "next_button")
         self.refresh_button = self.findChild(QPushButton, "refresh_button")
+        self.create_folder_button = self.findChild(QPushButton, "create_folder_button")
 
         # config view settings
-        self.table_view.setColumnHidden(4, True)  # hide path column
-        self.table_view.setColumnWidth(0, 300)  # set name col width
-        self.table_view.setColumnWidth(2, 80)  # set type col width
-        self.table_view.setColumnWidth(3, 80)  # set size col width
-
+        # self.table_view.setColumnHidden(4, True)  # hide path column
+        # self.table_view.setColumnWidth(0, 300)  # set name col width
+        # self.table_view.setColumnWidth(1, 120)  # set name col width
+        # self.table_view.setColumnWidth(2, 80)  # set type col width
+        # self.table_view.setColumnWidth(3, 80)  # set size col width
+        self.init_table_view()
         self.init_tree_view()
         self.init_click_functions()
         self.init_button_icons()
@@ -80,6 +82,10 @@ class MainView(QMainWindow):
         refresh_icon = QIcon("icon\\refresh.png")
         self.refresh_button.setIcon(refresh_icon)
         self.refresh_button.setIconSize(QSize(12, 12))
+
+        create_folder_icon = QIcon("icon\\add-folder.png")
+        self.create_folder_button.setIcon(create_folder_icon)
+        self.create_folder_button.setIconSize(QSize(25, 25))
 
     def init_click_functions(self):
         assert isinstance(self.main_view_controller.reset_root_folder, object)

@@ -133,9 +133,10 @@ class MainViewController:
         try:
             default_dir = os.path.expanduser('~')
             print(default_dir)
-            path = QFileDialog.getExistingDirectory(self.main_view, "Select Root Folder", default_dir)
-            path = os.path.abspath(path)
-            if path:
+            selected_path = QFileDialog.getExistingDirectory(self.main_view, "Select Root Folder", default_dir)
+
+            if selected_path:
+                path = os.path.abspath(selected_path)
                 self.tree_controller.load_tree(path)
                 self.table_controller.search_directory_contents(path)
                 # update root directory text box
