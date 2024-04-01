@@ -1,4 +1,5 @@
 import os
+import re
 
 
 def get_file_size_in_kb(size):

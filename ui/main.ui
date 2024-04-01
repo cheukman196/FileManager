@@ -219,8 +219,7 @@ color: rgb(255, 255, 255);
     </palette>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-</string>
+    <string notr="true"/>
    </property>
    <widget class="QFrame" name="frame">
     <property name="geometry">
@@ -858,7 +857,7 @@ border: 0;
     </widget>
     <widget class="QPushButton" name="up_button">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>

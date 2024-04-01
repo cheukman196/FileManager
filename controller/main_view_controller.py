@@ -116,10 +116,6 @@ class MainViewController:
             if not path:
                 ErrorMessageBox("Directory Stack Error", "No parent page found.")
                 return
-            if self.directory_stack.current_dir.path == self.directory_stack.root_dir.path:
-                ErrorMessageBox("Directory Stack Error",
-                                "This is the root folder.\nReset root folder path to parent directories if needed.")
-                return
             self.visit_page_by_path_string(path)
             self.directory_stack.visit_new_page(path)
         except OSError as e:

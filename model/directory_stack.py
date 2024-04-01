@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from model.folder import Folder
@@ -48,7 +49,7 @@ class DirectoryStack:
         # update status flags based on stacks and if we are at root directory
         self.can_visit_prev = not self.back_stack.empty()
         self.can_visit_next = not self.next_stack.empty()
-        self.can_visit_parent = self.current_dir.path != self.root_dir.path
+        self.can_visit_parent = self.current_dir.path != os.path.abspath(os.sep)
 
     # on main controller resetting root directory, reset directory stack as well
     def reset_root_directory(self, new_root_dir_path):
