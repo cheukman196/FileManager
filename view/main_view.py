@@ -32,6 +32,8 @@ class MainView(QMainWindow):
         self.next_button = self.findChild(QPushButton, "next_button")
         self.refresh_button = self.findChild(QPushButton, "refresh_button")
         self.create_folder_button = self.findChild(QPushButton, "create_folder_button")
+        self.move_folder_button = self.findChild(QPushButton, "move_folder_button")
+        self.copy_folder_button = self.findChild(QPushButton, "copy_folder_button")
 
         # config view settings
         # self.table_view.setColumnHidden(4, True)  # hide path column
@@ -87,6 +89,14 @@ class MainView(QMainWindow):
         self.create_folder_button.setIcon(create_folder_icon)
         self.create_folder_button.setIconSize(QSize(25, 25))
 
+        move_folder_icon = QIcon("icon\\move-folder.png")
+        self.move_folder_button.setIcon(move_folder_icon)
+        self.move_folder_button.setIconSize(QSize(19, 19))
+
+        copy_folder_icon = QIcon("icon\\copy-folder.png")
+        self.copy_folder_button.setIcon(copy_folder_icon)
+        self.copy_folder_button.setIconSize(QSize(20, 20))
+
     def init_click_functions(self):
         assert isinstance(self.main_view_controller.reset_root_folder, object)
 
@@ -97,6 +107,9 @@ class MainView(QMainWindow):
         self.next_button.clicked.connect(self.main_view_controller.click_next_button)
         self.up_button.clicked.connect(self.main_view_controller.click_up_button)
         self.refresh_button.clicked.connect(self.main_view_controller.visit_page_by_path_string)
+        self.create_folder_button.clicked.connect(self.main_view_controller.open_create_folders_window)
+        self.move_folder_button.clicked.connect(self.main_view_controller.click_move_files_button)
+        self.copy_folder_button.clicked.connect(self.main_view_controller.click_copy_files_button)
 
         self.browse_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
         self.tree_view.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
@@ -104,6 +117,11 @@ class MainView(QMainWindow):
         self.back_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
         self.next_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
         self.up_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
+        self.create_folder_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
+        self.refresh_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
+
+
+
 
     #
     def tree_view_scroll_to_index(self, index):

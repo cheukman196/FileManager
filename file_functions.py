@@ -1,7 +1,10 @@
 import os
+import shutil
 import sqlite3
 from pathlib import Path
 from datetime import datetime, timezone
+
+from view.error_message import ErrorMessageBox
 
 
 # append / create file
@@ -59,7 +62,44 @@ def create_directory(path):
 
 # will replace destination file if already exists
 # check destination beforehand
+# def relocate_file(original_path, new_path, collisionLimit = 50):
+#     destination_path = new_path
+#     counter = 1
+#     while(True):
+#         try:
+#             if not os.path.exists(original_path):
+#                 pass   # raise exception / notification for missing original path item
+#             if os.path.exists(destination_path):
+#                 pass   # raise exception for existing file in destination
+#             os.replace(original_path, destination_path)
+#             return
+#         except FileNotFoundError as e:
+#             print("File not found: " + str(e.strerror))
+#             return
+#         except PermissionError as e:
+#             destination_path = new_path + "(" + str(counter) + ")"
+#             counter += 1
+#             if counter >= collisionLimit + 1:
+#                 print("Cannot replace file: System has more than 50 files with the same file name\nError Message: " + str(e.strerror))
+#                 return
 def relocate_file(original_path, new_path, collisionLimit = 50):
+    destination_path = new_path
+    counter = 1
+    while(True):
+        try:
+            print(f"From {original_path} to {destination_path}")
+            os.replace(original_path, destination_path)
+        except FileNotFoundError as e:
+            return ErrorMessageBox("File Not Found Error", f"This file cannot be found:\n{original_path}", str(e))
+        except PermissionError as e:
+            destination_path = new_path + "(" + str(counter) + ")"
+            counter += 1
+            if counter >= collisionLimit + 1:
+                return ErrorMessageBox("Permission Error", f"This file already has the same file name:\n{new_path}", str(e))
+
+
+
+def copy_file(original_path, new_path, collisionLimit = 50):
     destination_path = new_path
     counter = 1
     while(True):
@@ -80,14 +120,10 @@ def relocate_file(original_path, new_path, collisionLimit = 50):
                 print("Cannot replace file: System has more than 50 files with the same file name\nError Message: " + str(e.strerror))
                 return
 
-
 def main():
-    # print_files_in_directory(r"C:\Users\CM\Desktop")
-    # print_subdirectories_in_directory(r"C:\Users\CM\Documents\Tools")
-    # print_last_modified_in_directory(r"C:\Users\CM\Documents\Tools")
-    for i in range(60):
-        create_directory(r"C:\Users\CM\Documents\Tools3\Test2")
-        relocate_file(r"C:\Users\CM\Documents\Tools3\Test2", r"C:\Users\CM\Documents\Tools3\Test1")
+    relocate_file(r"C:\Users\CM\Downloads\send.png", r"C:\Users\CM\Documents\Tools3")
+    # shutil.copy2(r"C:\Users\CM\PycharmProjects\FileManager_test1\icon\refresh.png", r"C:/Users/CM/Documents/Tools3/aa")
+    pass
 
 
 

@@ -38,7 +38,7 @@ class CreateFolderView(QWidget):
         self.add_suffix_checkbox.clicked.connect(self.toggle_suffix_textbox)
         self.return_button.clicked.connect(self.close)
         self.create_path_button.clicked.connect(self.create_folder_controller.select_file_creation_path)
-        self.create_folders_button.clicked.connect(self.create_folder_controller.parse_folder_names_text)
+        self.create_folders_button.clicked.connect(self.create_folder_controller.create_folders)
 
     def toggle_prefix_textbox(self):
         self.add_prefix_textbox.setEnabled(self.add_prefix_checkbox.isChecked())

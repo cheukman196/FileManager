@@ -3,10 +3,14 @@ import subprocess
 from pathlib import Path
 from sys import platform
 
+from PyQt6.QtCore import QUrl
 from PyQt6.QtWidgets import QFileDialog
+
+from controller.create_folder_controller import CreateFolderController
 from controller.directory_table_controller import DirectoryTableController
 from controller.directory_tree_controller import DirectoryTreeController
 from model.directory_stack import DirectoryStack
+from utils import relocate_file, copy_file
 from view.error_message import ErrorMessageBox
 from view.main_view import MainView
 
@@ -39,6 +43,7 @@ class MainViewController:
         except Exception as e:
             raise Exception("visit page by string raised error")
 
+    # click on directory tree, navigate to file
     def get_file_in_tree_view(self):
         try:
             index_obj = self.main_view.tree_view.currentIndex()
@@ -53,6 +58,7 @@ class MainViewController:
         else:
             self.directory_stack.visit_new_page(path)
 
+    # click on directory table, navigate to file
     def get_file_in_table_view(self):
         try:
             table_view = self.main_view.table_view
@@ -64,19 +70,16 @@ class MainViewController:
             path = item.text()
             self.visit_page_by_path_string(path)
         except PermissionError as e:
-            print("Permission Exception")
             return ErrorMessageBox("Permission Error", str(e))
         except OSError as e:
-            print("OS Exception")
             ErrorMessageBox("OS Error", str(e))
 
         except Exception as e:
-            print("General Exception")
             ErrorMessageBox("Error", str(e))
             # raise Exception(e)
         else:
-            print("Else Block")
             self.directory_stack.visit_new_page(path)
+
 
     def click_back_button(self):
         try:
@@ -117,13 +120,14 @@ class MainViewController:
                 ErrorMessageBox("Directory Stack Error", "No parent page found.")
                 return
             self.visit_page_by_path_string(path)
-            self.directory_stack.visit_new_page(path)
         except OSError as e:
             ErrorMessageBox("OS Error", str(e))
             return
         except Exception as e:
             ErrorMessageBox("Error", str(e))
-            return
+        else:
+            self.directory_stack.visit_new_page(path)
+
 
     def reset_root_folder(self):
         try:
@@ -139,11 +143,13 @@ class MainViewController:
                 self.main_view.search_box.setText(path)
                 self.directory_stack.reset_root_directory(path)
         except OSError as e:
-            ErrorMessageBox("OS Error", str(e))
-            return
+            return ErrorMessageBox("OS Error", str(e))
+
         except Exception as e:
-            ErrorMessageBox("Error", str(e))
-            return
+            return ErrorMessageBox("Error", str(e))
+
+    def open_create_folders_window(self):
+        CreateFolderController(self, self.directory_stack.current_dir.path)
 
     def update_navigation_bar_and_button_state(self):
         self.main_view.back_button.setEnabled(self.directory_stack.can_visit_prev)
@@ -151,14 +157,28 @@ class MainViewController:
         self.main_view.up_button.setEnabled(self.directory_stack.can_visit_parent)
         self.main_view.address_bar.setText(self.directory_stack.current_dir.path)
 
-    def open_table_view_directory_in_os(self):
-        indexes = self.main_view.table_view.selectedIndexes()
-        item = self.table_controller.table_model.itemFromIndex(indexes[-1])
-        path = Path(item.text())
-        if platform.system() == 'Darwin':  # macOS
-            subprocess.call(('open', path))
-        elif platform.system() == 'Windows':  # Windows
-            os.startfile(path)
-            # subprocess.call(['start', path], shell=True)
-        else:  # linux variants
-            subprocess.call(('xdg-open', path))
+    def click_move_files_button(self):
+        try:
+            destination_path = self.directory_stack.current_dir.path
+            selected_path = QFileDialog.getOpenFileUrls(self.main_view, 'Select Files to move to folder', QUrl(destination_path))[0]
+            if len(selected_path) > 0:
+                for path in selected_path:
+                    path = os.path.normpath(path.path()).lstrip(os.sep)
+                    print("Mod: " + path)
+                    relocate_file(path, destination_path)
+                self.main_view.refresh_button.click()
+        except Exception as e:
+            print(e.args)
+
+    def click_copy_files_button(self):
+        try:
+            destination_path = self.directory_stack.current_dir.path
+            selected_path = QFileDialog.getOpenFileUrls(self.main_view, "Select Root Folder", QUrl(destination_path))[0]
+            if len(selected_path) > 0:
+                for path in selected_path:
+                    path = os.path.normpath(path.path()).lstrip(os.sep)
+                    copy_file(path, destination_path)
+                self.main_view.refresh_button.click()
+        except Exception as e:
+            print(e.args)
+
