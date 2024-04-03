@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from PyQt6.QtCore import QSize
@@ -11,7 +12,6 @@ from view.create_folder_view import CreateFolderView
 if __name__ == '__main__':
     try:
         app = QApplication([])
-
         controller = MainViewController()
 
         window_logo_icon = QIcon("icon\\logo.png")
