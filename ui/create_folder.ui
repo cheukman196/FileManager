@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Create_Folders</class>
+ <widget class="QWidget" name="Create_Folders">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>481</width>
+    <height>549</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>481</width>
+    <height>549</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Create Folders</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel, QCheckBox, QTextEdit {
+color: #fafafa;
+}
+
+</string>
+  </property>
+  <widget class="QLineEdit" name="create_path_textbox">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>40</y>
+     <width>231</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(250, 250, 250);
+border-top-left-radius: 4px;
+border-bottom-left-radius: 4px;
+border: 0;
+</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="create_path_label">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>40</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Create Path:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="add_prefix_textbox">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>80</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit:disabled {
+	background-color: rgb(197, 197, 197);
+}
+
+QLineEdit {
+	background-color: rgb(250, 250, 250);
+	border-radius: 4px;
+	border: 0;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="add_suffix_textbox">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>120</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit:disabled {
+	background-color: rgb(197, 197, 197);
+}
+
+QLineEdit {
+	background-color: rgb(250, 250, 250);
+	border-radius: 4px;
+	border: 0;
+}</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="add_prefix_checkbox">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>80</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add Prefix:</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="add_suffix_checkbox">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>120</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add Suffix:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="create_folders_button">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>480</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Create Folders</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="return_button">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>480</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Return</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>481</width>
+     <height>551</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(47, 47, 47);
+color: #fafafa;
+</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QTreeView" name="search_tree">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>130</y>
+      <width>301</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTreeView {
+background-color: rgb(47, 47, 47);
+color: rgb(255, 255, 255);
+}
+
+QHeaderView:section{
+background-color: rgb(52, 52, 52);
+color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 0;
+}
+
+QHeaderView:section:hover{
+background-color: rgb(62, 62, 62);
+}
+
+QScrollBar:vertical {
+	border: none;
+	background-color: #fafafa;
+    width: 8px;
+    margin: 10px 0 5px 0;
+	border-radius: 10px;
+ }
+
+/*  HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {	
+	background-color: rgb(206, 223, 218);
+	min-height: 5px;
+	border-radius: 1rem;
+}
+
+
+/* BTN TOP - SCROLLBAR */
+QScrollBar::sub-line:vertical {
+	display: none;
+	border: none;
+	background-color: #fafafa;
+	height: 10px;
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+
+
+/* BTN BOTTOM - SCROLLBAR */
+QScrollBar::add-line:vertical {
+	display: none;
+	border: none;
+	background-color: #fafafa;
+	height: 10px;
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}
+
+
+/* RESET ARROW */
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	background: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;
+}
+
+</string>
+    </property>
+    <property name="locale">
+     <locale language="English" country="Canada"/>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustToContents</enum>
+    </property>
+    <property name="autoScroll">
+     <bool>true</bool>
+    </property>
+    <property name="autoScrollMargin">
+     <number>5</number>
+    </property>
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="animated">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="create_path_button">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>40</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Change your root folder</string>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton{
+	background-color: rgb(147, 177, 166);
+	background-color: rgb(19, 66, 98);
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	color: rgb(255, 255, 255);
+	border-bottom: 1px solid rgb(24, 61, 61);
+}
+
+QPushButton:hover{
+	
+	background-color: rgb(31, 112, 165);
+	transition: all 1s easeout;
+}
+
+
+</string>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="tip_browser">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>430</y>
+      <width>401</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9.75pt; font-weight:600;&quot;&gt;Tip: &lt;/span&gt;&lt;span style=&quot; font-size:9.75pt;&quot;&gt;Use '/' or '\' in folder names to create subfolders. For example, entering 'folder1/folder2' creates 'folder1' which contains 'folder2'.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textarea_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>205</y>
+      <width>401</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Enter folder names (one line will create one folder)</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="folder_names_textbox">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>230</y>
+      <width>401</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTextEdit {
+	color: rgb(0, 0, 0);
+	border-radius: 5px;
+	background-color: rgb(250, 250, 250);
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="explore_path_checkbox">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>160</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Go to Create Path on creating folders</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+  <zorder>frame</zorder>
+  <zorder>create_path_textbox</zorder>
+  <zorder>create_path_label</zorder>
+  <zorder>add_prefix_textbox</zorder>
+  <zorder>add_suffix_textbox</zorder>
+  <zorder>add_prefix_checkbox</zorder>
+  <zorder>add_suffix_checkbox</zorder>
+  <zorder>create_folders_button</zorder>
+  <zorder>return_button</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
