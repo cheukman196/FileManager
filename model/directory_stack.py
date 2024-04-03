@@ -5,6 +5,8 @@ from model.folder import Folder
 from model.stack import Stack
 
 
+# handles file explorer back, next and parent directory buttons
+# uses dual stacks to track previous page, next page and current directory
 class DirectoryStack:
     def __init__(self, root_dir_path):
         self.back_stack = Stack()
@@ -22,7 +24,6 @@ class DirectoryStack:
         self.next_stack.clear()
         self.current_dir = Folder(new_page_path)
         self.update_directory_stack_status()
-        print(f"Visited new page: {self.current_dir.path}")
 
     # press back button
     def visit_previous_page(self):
@@ -49,7 +50,7 @@ class DirectoryStack:
         # update status flags based on stacks and if we are at root directory
         self.can_visit_prev = not self.back_stack.empty()
         self.can_visit_next = not self.next_stack.empty()
-        self.can_visit_parent = self.current_dir.path != os.path.abspath(os.sep)
+        self.can_visit_parent = self.current_dir.path != os.path.abspath(os.sep) # if not system root
 
     # on main controller resetting root directory, reset directory stack as well
     def reset_root_directory(self, new_root_dir_path):

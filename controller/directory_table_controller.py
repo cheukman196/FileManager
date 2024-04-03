@@ -2,9 +2,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from PyQt6.QtWidgets import QMessageBox
 
-import utils
+from service import utils
 from view.error_message import ErrorMessageBox
 
 # manages QTableView in main view
@@ -17,15 +16,16 @@ class DirectoryTableController:
         self.main_view = main_view
         self.search_directory_contents(os.path.expanduser('~'))
 
+    # search and load contents in a given directory path
+    # populate model and assign to main_view (table_view)
     def search_directory_contents(self, path):
         try:
-            # clear previous records (if any)
+            # track number of previous records (if any)
+            # we will use this to remove previous data from model if all operations goes well
             init_row_count = self.table_model.rowCount()
-            # self.table_model.removeRows(0, init_row_count)
 
             # populate table
             path_obj = Path(path)
-            print(str(path_obj.parent))
             for file in path_obj.iterdir():
                 # do not add to table if not accessible
                 if os.access(file, os.R_OK):
@@ -41,7 +41,7 @@ class DirectoryTableController:
                     # add to table
                     self.table_model.appendRow(item_list)
 
-            # clear all original data (if any new files failed to load, data will remain)
+            # clear all original data (if any new files failed to load, previous data will remain)
             self.table_model.removeRows(0, init_row_count)
 
             self.main_view.table_view.setModel(self.table_model)
@@ -50,16 +50,11 @@ class DirectoryTableController:
             self.main_view.table_view.setColumnWidth(1, 120)  # set name col width
             self.main_view.table_view.setColumnWidth(2, 80)  # set type col width
             self.main_view.table_view.setColumnWidth(3, 80)  # set size col width
-
         except OSError as e:
-            print("os: " + str(e))
-            ErrorMessageBox("OS Error", path, str(e))
-            return
-
+            return ErrorMessageBox("OS Error", path, str(e))
         except Exception as e:
-            print("except: " + str(e))
-            ErrorMessageBox("Windows Error", str(e))
-            return
+            return ErrorMessageBox("Windows Error", str(e))
+
 
 
 

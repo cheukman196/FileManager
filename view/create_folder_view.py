@@ -1,7 +1,7 @@
 from PyQt6 import uic
 from PyQt6.QtWidgets import *
 
-
+# Window that creates folders (see ui/create_folder.ui)
 class CreateFolderView(QWidget):
     def __init__(self, create_folder_controller, file_creation_path=""):
         super().__init__()

@@ -1,7 +1,5 @@
 import os
-import subprocess
 from pathlib import Path
-from sys import platform
 
 from PyQt6.QtCore import QUrl
 from PyQt6.QtWidgets import QFileDialog
@@ -10,7 +8,7 @@ from controller.create_folder_controller import CreateFolderController
 from controller.directory_table_controller import DirectoryTableController
 from controller.directory_tree_controller import DirectoryTreeController
 from model.directory_stack import DirectoryStack
-from utils import relocate_file, copy_file
+from service.utils import relocate_file, copy_file
 from view.error_message import ErrorMessageBox
 from view.main_view import MainView
 
@@ -68,15 +66,15 @@ class MainViewController:
             row = table_view.selectionModel().currentIndex().row()
             item = table_model.item(row, 4)
             path = item.text()
+            if not Path(path).is_dir():
+                return
             self.visit_page_by_path_string(path)
         except PermissionError as e:
             return ErrorMessageBox("Permission Error", str(e))
         except OSError as e:
             ErrorMessageBox("OS Error", str(e))
-
         except Exception as e:
             ErrorMessageBox("Error", str(e))
-            # raise Exception(e)
         else:
             self.directory_stack.visit_new_page(path)
 
@@ -112,10 +110,8 @@ class MainViewController:
 
     def click_up_button(self):
         try:
-            print(self.directory_stack.current_dir.parent)
             parent_directory = self.directory_stack.current_dir.parent
             path = parent_directory
-            print(path)
             if not path:
                 ErrorMessageBox("Directory Stack Error", "No parent page found.")
                 return
@@ -132,7 +128,6 @@ class MainViewController:
     def reset_root_folder(self):
         try:
             default_dir = os.path.expanduser('~')
-            print(default_dir)
             selected_path = QFileDialog.getExistingDirectory(self.main_view, "Select Root Folder", default_dir)
 
             if selected_path:
@@ -164,21 +159,27 @@ class MainViewController:
             if len(selected_path) > 0:
                 for path in selected_path:
                     path = os.path.normpath(path.path()).lstrip(os.sep)
-                    print("Mod: " + path)
                     relocate_file(path, destination_path)
                 self.main_view.refresh_button.click()
+        except OSError as e:
+            return ErrorMessageBox("OS Error",
+                                       "Source file or destination folder is missing.", str(e))
         except Exception as e:
-            print(e.args)
+            return ErrorMessageBox("Unexpected Error", str(e))
+
 
     def click_copy_files_button(self):
         try:
             destination_path = self.directory_stack.current_dir.path
-            selected_path = QFileDialog.getOpenFileUrls(self.main_view, "Select Root Folder", QUrl(destination_path))[0]
+            selected_path = QFileDialog.getOpenFileUrls(self.main_view, "Select Files to copy to folder", QUrl(destination_path))[0]
             if len(selected_path) > 0:
                 for path in selected_path:
                     path = os.path.normpath(path.path()).lstrip(os.sep)
                     copy_file(path, destination_path)
                 self.main_view.refresh_button.click()
+        except OSError as e:
+            return ErrorMessageBox("OS Error",
+                                   "Source file or destination folder is missing.", str(e))
         except Exception as e:
-            print(e.args)
+            return ErrorMessageBox("Unexpected Error", str(e))
 

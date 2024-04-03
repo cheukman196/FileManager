@@ -1,3 +1,6 @@
+# Stack class is a generic stack structure that handles folder objects
+# Implemented using a linkedlist that add (push) and remove (pop) head node
+# use for DirectoryStack class to handle previous page, next page, parent directory buttons
 class Stack:
     def __init__(self):
         self.size = 0

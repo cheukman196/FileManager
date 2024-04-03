@@ -6,7 +6,7 @@ from PyQt6.QtCore import QSize
 from PyQt6.QtGui import QStandardItemModel, QFileSystemModel, QIcon
 from PyQt6.QtWidgets import *
 
-# main view for application (type: QMainWindow)
+# main view for application (type: QMainWindow), see ui/main.ui
 class MainView(QMainWindow):
     def __init__(self, main_view_controller):
         super(MainView, self).__init__()
@@ -22,9 +22,10 @@ class MainView(QMainWindow):
         self.tree_model = QFileSystemModel()
 
         # get all visual elements in .ui file
+        self.main_view = self.findChild(QMainWindow, "search_window")
         self.browse_button = self.findChild(QPushButton, "browse_file_button")
         self.search_box = self.findChild(QLineEdit, "search_box")
-        self.address_bar = self.findChild(QLineEdit, "address_bar")
+        self.address_bar = self.findChild(QTextBrowser, "address_bar")
         self.table_view = self.findChild(QTableView, "search_result")
         self.tree_view = self.findChild(QTreeView, "search_tree")
         self.back_button = self.findChild(QPushButton, "back_button")
@@ -36,11 +37,6 @@ class MainView(QMainWindow):
         self.copy_folder_button = self.findChild(QPushButton, "copy_folder_button")
 
         # config view settings
-        # self.table_view.setColumnHidden(4, True)  # hide path column
-        # self.table_view.setColumnWidth(0, 300)  # set name col width
-        # self.table_view.setColumnWidth(1, 120)  # set name col width
-        # self.table_view.setColumnWidth(2, 80)  # set type col width
-        # self.table_view.setColumnWidth(3, 80)  # set size col width
         self.init_table_view()
         self.init_tree_view()
         self.init_click_functions()
@@ -97,9 +93,11 @@ class MainView(QMainWindow):
         self.copy_folder_button.setIcon(copy_folder_icon)
         self.copy_folder_button.setIconSize(QSize(20, 20))
 
+
     def init_click_functions(self):
         assert isinstance(self.main_view_controller.reset_root_folder, object)
 
+        # set all button triggers and connected functions
         self.browse_button.clicked.connect(self.main_view_controller.reset_root_folder)
         self.tree_view.clicked.connect(self.main_view_controller.get_file_in_tree_view)
         self.table_view.doubleClicked.connect(self.main_view_controller.get_file_in_table_view)
@@ -120,15 +118,13 @@ class MainView(QMainWindow):
         self.create_folder_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
         self.refresh_button.clicked.connect(self.main_view_controller.update_navigation_bar_and_button_state)
 
-
-
-
-    #
+    # when table_view shows a particular dir, update tree_view to expand and focus on the same dir
     def tree_view_scroll_to_index(self, index):
         self.tree_view.expand(index)
         self.tree_view.setCurrentIndex(index)
         self.tree_view.scrollTo(index, QAbstractItemView.ScrollHint.PositionAtCenter)
 
+    # called to reset tree_view on resetting root directory
     def update_tree_view(self, tree_model, path=os.path.expanduser('~')):
         self.tree_model = tree_model
         self.tree_view.setModel(self.tree_model)

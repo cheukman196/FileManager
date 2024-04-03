@@ -18,6 +18,7 @@ class DirectoryTreeController:
         self.main_view = main_view
         self.load_tree()
 
+    # load QFileSystemModel (model that handles file explorer data)
     def load_tree(self, path=os.path.expanduser('~')):
         try:
             # update model
