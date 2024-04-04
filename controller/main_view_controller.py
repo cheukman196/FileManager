@@ -1,9 +1,11 @@
 import os
+import sqlite3
 from pathlib import Path
 
 from PyQt6.QtCore import QUrl
 from PyQt6.QtWidgets import QFileDialog
 
+from controller.bookmarks_controller import BookmarksController
 from controller.create_folder_controller import CreateFolderController
 from controller.directory_table_controller import DirectoryTableController
 from controller.directory_tree_controller import DirectoryTreeController
@@ -37,9 +39,9 @@ class MainViewController:
                 index = self.tree_controller.get_index_by_path(path)
                 self.main_view.tree_view_scroll_to_index(index)  # load tree view
         except OSError as e:
-            raise OSError("visit page by string raised error")
+            raise OSError(e)
         except Exception as e:
-            raise Exception("visit page by string raised error")
+            raise Exception(e)
 
     # click on directory tree, navigate to file
     def get_file_in_tree_view(self):
@@ -68,13 +70,14 @@ class MainViewController:
             path = item.text()
             if not Path(path).is_dir():
                 return
+
             self.visit_page_by_path_string(path)
         except PermissionError as e:
             return ErrorMessageBox("Permission Error", str(e))
         except OSError as e:
-            ErrorMessageBox("OS Error", str(e))
+            return ErrorMessageBox("OS Error", str(e))
         except Exception as e:
-            ErrorMessageBox("Error", str(e))
+            return ErrorMessageBox("Error", str(e))
         else:
             self.directory_stack.visit_new_page(path)
 
@@ -145,6 +148,16 @@ class MainViewController:
 
     def open_create_folders_window(self):
         CreateFolderController(self, self.directory_stack.current_dir.path)
+
+    def open_bookmarks_window(self):
+        try:
+            BookmarksController(self, self.directory_stack.current_dir.path)
+        except OSError as e:
+            return ErrorMessageBox("OS Error",
+                                       "Source file or destination folder is missing.", str(e))
+        except Exception as e:
+            return ErrorMessageBox("Unexpected Error", str(e))
+
 
     def update_navigation_bar_and_button_state(self):
         self.main_view.back_button.setEnabled(self.directory_stack.can_visit_prev)

@@ -86,3 +86,4 @@ def copy_file(original_path, new_path, collisionLimit=50):
         else:
             # if all checks pass, copy file
             return shutil.copy2(original_path, resultant_file_path)
+
