@@ -33,6 +33,9 @@ This project uses a number of libraries to support it's core functionailities.
 ### Common Python Libraries
 - `os`: features to work with the operating system and directories
 - `pathlib`: features to manipulate with file paths 
+- `sqlite3`: features to manage a lightweight database to handle bookmarking
+- `pydoc`: features to escape html characters
+- `contextlib`: features to manage resource and auto-closing
 
 ### Third-Party Libraries
 - `PyQt6`: used to implement GUI, handle data and implement the application in a MVC manner
