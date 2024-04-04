@@ -39,9 +39,9 @@ class MainViewController:
                 index = self.tree_controller.get_index_by_path(path)
                 self.main_view.tree_view_scroll_to_index(index)  # load tree view
         except OSError as e:
-            raise OSError("visit page by string raised error")
+            raise OSError(e)
         except Exception as e:
-            raise Exception("visit page by string raised error")
+            raise Exception(e)
 
     # click on directory tree, navigate to file
     def get_file_in_tree_view(self):
@@ -70,13 +70,14 @@ class MainViewController:
             path = item.text()
             if not Path(path).is_dir():
                 return
+
             self.visit_page_by_path_string(path)
         except PermissionError as e:
             return ErrorMessageBox("Permission Error", str(e))
         except OSError as e:
-            ErrorMessageBox("OS Error", str(e))
+            return ErrorMessageBox("OS Error", str(e))
         except Exception as e:
-            ErrorMessageBox("Error", str(e))
+            return ErrorMessageBox("Error", str(e))
         else:
             self.directory_stack.visit_new_page(path)
 
