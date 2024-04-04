@@ -1,9 +1,11 @@
 import os
+import sqlite3
 from pathlib import Path
 
 from PyQt6.QtCore import QUrl
 from PyQt6.QtWidgets import QFileDialog
 
+from controller.bookmarks_controller import BookmarksController
 from controller.create_folder_controller import CreateFolderController
 from controller.directory_table_controller import DirectoryTableController
 from controller.directory_tree_controller import DirectoryTreeController
@@ -145,6 +147,16 @@ class MainViewController:
 
     def open_create_folders_window(self):
         CreateFolderController(self, self.directory_stack.current_dir.path)
+
+    def open_bookmarks_window(self):
+        try:
+            BookmarksController(self, self.directory_stack.current_dir.path)
+        except OSError as e:
+            return ErrorMessageBox("OS Error",
+                                       "Source file or destination folder is missing.", str(e))
+        except Exception as e:
+            return ErrorMessageBox("Unexpected Error", str(e))
+
 
     def update_navigation_bar_and_button_state(self):
         self.main_view.back_button.setEnabled(self.directory_stack.can_visit_prev)

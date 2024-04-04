@@ -981,9 +981,9 @@ background-color: rgb(197, 197, 197);
     <widget class="QTextBrowser" name="address_bar">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>230</x>
        <y>110</y>
-       <width>521</width>
+       <width>491</width>
        <height>21</height>
       </rect>
      </property>
@@ -1010,6 +1010,43 @@ border: 0;
      </property>
      <property name="openLinks">
       <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bookmarks_button">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>110</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refresh page&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+background-color: rgb(250, 250, 250);
+border-radius: 4px;
+}
+
+QPushButton:hover{
+background-color: rgb(49, 173, 255);
+transition: all 1s easeout;
+}
+
+QPushButton:disabled {
+background-color: rgb(197, 197, 197);
+}
+
+
+</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
