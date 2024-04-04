@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import *
 from controller.create_folder_controller import CreateFolderController
 from controller.main_view_controller import MainViewController
 from view.create_folder_view import CreateFolderView
+# github repo: https://github.com/cheukman196/FileManager
 
 if __name__ == '__main__':
     app = QApplication([])

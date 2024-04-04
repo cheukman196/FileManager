@@ -139,22 +139,22 @@ class BookmarksController:
         path = self.bookmarks_view.my_bookmarks_list.currentItem().toolTip()
         name = self.bookmarks_view.my_bookmarks_list.currentItem().text()
         id = self.bookmarks_view.my_bookmarks_list.currentItem().data(Qt.ItemDataRole.UserRole)
-        print(id)
-        if self.bookmark_delete_confirmation_prompt():
-            try:
-                with (sqlite3.Connection(self.DATABASE_PATH) as conn):
-                    with closing(conn.cursor()) as c:
-                        c.execute('''DELETE FROM Bookmarks
-                                    WHERE bookmark_id = ?''', (id,))
-                        if c.rowcount == 1:
-                            self.bookmark_message(name, path, "deleted")
-                        else:
-                            return ErrorMessageBox("Bookmark Error", "Unexpected error in editing bookmark.")
-            except OSError as e:
-                return ErrorMessageBox("OS Error", str(e))
-            except Exception as e:
-                return ErrorMessageBox("Error", str(e))
+        try:
+            with (sqlite3.Connection(self.DATABASE_PATH) as conn):
+                with closing(conn.cursor()) as c:
+                    c.execute('''DELETE FROM Bookmarks
+                                WHERE bookmark_id = ?''', (id,))
+                    if c.rowcount == 1:
+                        self.bookmark_message(name, path, "deleted")
+                    else:
+                        return ErrorMessageBox("Bookmark Error", "Unexpected error in deleting bookmark.")
+        except OSError as e:
+            return ErrorMessageBox("OS Error", str(e))
+        except Exception as e:
+            return ErrorMessageBox("Error", str(e))
+        else:
             self.load_bookmark_list()  # reload on succcess
+            self.bookmarks_view.enable_bookmark_buttons(False)
 
     # opens a window to indicate operation successful
     # action = operation (in past tense) e.g. Bookmark created/edited/deleted successfully
@@ -165,26 +165,3 @@ class BookmarksController:
         success_msg.setIcon(QMessageBox.Icon.Information)
         success_msg.exec()
 
-    # prompt to confirm user wants to delete bookmark
-    def bookmark_delete_confirmation_prompt(self):
-        path = self.bookmarks_view.my_bookmarks_list.currentItem().toolTip()
-        name = self.bookmarks_view.my_bookmarks_list.currentItem().text()
-        try:
-            prompt = QMessageBox()
-            prompt.setWindowTitle("Delete Bookmark")
-            prompt.setText(f"Delete the following bookmark?\nName: {name}\nPath: {path}")
-            prompt.setIcon(QMessageBox.Icon.Question)
-            prompt.addButton(QMessageBox.StandardButton.Yes)
-            prompt.addButton(QMessageBox.StandardButton.Cancel)
-            prompt.exec()
-            self.prompt = prompt
-            if prompt.button(QMessageBox.StandardButton.Yes).clicked:
-                return True
-            elif prompt.button(QMessageBox.StandardButton.Cancel).clicked:
-                return False
-            else:
-                return False
-        except OSError as e:
-            return ErrorMessageBox("OS Error", str(e))
-        except Exception as e:
-            return ErrorMessageBox("Error", str(e))
